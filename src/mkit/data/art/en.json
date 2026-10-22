@@ -1,0 +1,38 @@
+{
+  "locale": "en-US",
+  "dir": "ltr",
+  "hero": {
+    "name": "My App",
+    "title": "The one line that says what the app is [for you]",
+    "sub": "What it does for people, in about ten words",
+    "chips": ["First feature", "Second feature", "Third feature"]
+  },
+  "home": {
+    "title": "A benefit, not a feature [in bold]",
+    "sub": "One sentence that backs the headline up"
+  },
+  "alerts": {
+    "title": "Never miss [the moment] again",
+    "sub": "What the notification does for them",
+    "notify": {
+      "app": "My App",
+      "when": "now",
+      "title": "The app's real notification title",
+      "body": "The app's real notification text."
+    }
+  },
+  "detail": {
+    "title": "Everything [in one place]",
+    "sub": "What this screen gives them"
+  },
+  "home_dark": {
+    "title": "Easy on the eyes, [day or night]",
+    "sub": "A full dark theme with the same clear view"
+  },
+  "feature": {
+    "name": "My App",
+    "title": "The promise [in five words]",
+    "sub": "The search term people use for this kind of app",
+    "chips": ["First feature", "Second feature", "Third feature"]
+  }
+}

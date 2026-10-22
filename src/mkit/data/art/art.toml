@@ -1,0 +1,119 @@
+# Store art for this app, built by `mkit art build` (docs/store-art.md).
+# Paths are relative to the app folder (where mkit.toml is).
+
+layout = "classic"               # "classic" (words over one phone, soft gradient) or "pop"
+                                 # (vivid ground, bold underlined titles, big phones, pills; see below)
+reference = "en"                 # the captions file every language is measured against
+
+font_dir = "assets/fonts"        # holds <font>-Regular/-Medium/-SemiBold/-Bold.ttf
+font = "Barlow"                  # the app's own typeface; draws every Latin-script language
+mascot = "assets/icon/icon_foreground.svg"   # SVG or PNG: hero brand, feature graphic, notification icon
+decoration = "contour"           # classic's backdrop: "contour" (topographic rings), "leaves" (sprigs) or "none"
+
+# The status bar. mode = "redraw" (classic's default): the phone's own icons
+# are erased and a clean 9:41 bar is drawn over the capture. Boxes are [left,
+# top, right, bottom] in capture pixels.
+# mode = "clean" (pop's default): the capture keeps its own bar, painted over
+# up to `height` (default 96) in the colour at `sample`, with a 9:41, signal
+# and battery drawn in dark or light ink to suit it.
+[status_bar]
+height = 100
+erase = [[36, 8, 250, 96], [760, 8, 1048, 96]]
+# mode = "clean"
+# sample = [540, 60]
+
+# Anything private in a capture (an account name, an email) is erased the same way.
+# [shots.home]
+# erase = [[394, 166, 568, 226]]
+
+# Colours, when the app's look differs from the default green. Any key can be left out.
+# [theme.light]
+# bg1 = "#F4F7EF"          # background gradient, top
+# bg2 = "#DCEAD4"          # background gradient, bottom
+# line = "#4E9150"         # contour lines, or the sprigs
+# line_op = 0.20
+# ink = "#1F2A21"          # headline
+# sub = "#4D5C50"          # subline
+# accent = "#2F7A3E"       # [accent] words, brand name
+# tile = "#E3EFDD"         # notification icon tile
+# chip_border = "rgba(78,145,80,.28)"
+# [theme.dark]             # for slides with dark = true
+# bg1 = "#0E1210"
+# bg2 = "#16261A"
+# ink = "#F3F6F1"
+# accent = "#A5D69B"
+#
+# With layout = "pop" the same tables hold pop's colours instead (defaults shown;
+# [theme.dark] defaults to the light ones with bg1/bg2/bg3 = #1F3D29/#122419/#0B140E,
+# bg_mid = 50 and title_shadow = "none"):
+# [theme.light]
+# bg1 = "#55D27E"          # the ground: a radial glow from the top...
+# bg2 = "#26AC52"
+# bg3 = "#168A3E"          # ...to the bottom
+# bg_mid = 48              # where bg2 sits, in percent
+# blob_dark = "#0F7A34"    # soft shade, bottom left
+# blob_light = "#7BE39B"   # soft light, top right
+# glow = "#FFFFFF"         # halo and ring behind the phones, sprigs, dots, chip glass
+# ink = "#FFFFFF"          # titles, the name, chips
+# title_shadow = "0 4px 18px rgba(5,60,25,.25)"
+# underline = "#FFD95A"    # the hand-drawn line under the [word]
+# accent = "#1E9E4A"       # ticks, the go pill, the notification tile
+# pill = "#FFFFFF"         # pills and the notification card
+# pill_ink = "#1B2A1F"
+# shade = "#043214"        # every shadow, at its own strength
+# phone = "#141816"        # the phone frame
+
+# Fallback fonts for other scripts (Windows names), by listing code:
+# [script_fonts]
+# ka = "Sylfaen"
+
+# The screenshots, in Play order (up to 8). Each id needs an entry in every
+# captions file. kind = "landscape" is the 1920x1080 hero with three phones;
+# the rest are 1080x1920 slides with one phone. shot = a file in shots/.
+[[slide]]
+id = "hero"
+kind = "landscape"
+shots = ["detail", "home", "home_dark"]   # left, middle (front), right
+
+[[slide]]
+id = "home"
+shot = "home"
+
+[[slide]]
+id = "alerts"
+shot = "alerts"
+notify = true            # a phone notification card over the phone (captions: notify)
+
+[[slide]]
+id = "detail"
+shot = "detail"
+
+[[slide]]
+id = "home_dark"
+shot = "home_dark"
+dark = true
+
+# offset = 520 on a slide scrolls its shot up by that many capture pixels.
+
+# Pop only: pills and pictures on a slide, in page pixels (left, top);
+# right-to-left pages mirror them. The hero takes them too, and the feature
+# graphic as [[feature.pill]] / [[feature.art]]. In pop the hero fans two or
+# three `shots`, and a slide may set notify_y (the notification card's top, default 600).
+# [[slide.pill]]
+# text = "Lemons"        # literal, never translated (an item named on the capture)...
+# key = "add"            # ...or translated: captions <slide>.pills.add
+# go = true              # the green action pill
+# x = 40
+# y = 1130
+# size = 50              # font size (default 44)
+# rotate = -5
+# [[slide.art]]
+# src = "store/art/mascot.svg"   # PNG or SVG in the app repo
+# x = 760
+# y = 360
+# height = 240
+# rotate = 10
+# z = 6                  # stacking (default 4; phones 1-2, pills 5)
+
+[feature]                # the 1024x500 feature graphic
+shot = "home"            # pop: shots = ["back", "front"] for two phones
