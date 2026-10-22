@@ -55,6 +55,11 @@ MANUAL = (
     {'id': 'declarations', 'what': 'App content declarations other than data safety: ads, target '
      'audience, content rating, permissions and foreground services, account deletion URL',
      'where': 'App content', 'applies': 'every app, and again when the app changes'},
+    {'id': 'production-access', 'what': 'Production access for a new personal developer '
+     'account: 12 testers opted in for 14 days of closed testing, then apply',
+     'where': 'Play Console > Testing > Closed testing, then Production', 'applies': 'new personal accounts'},
+    {'id': 'app-access', 'what': 'Test credentials for an app behind a sign-in, so Play review '
+     'can get past the login screen', 'where': 'App content > App access', 'applies': 'apps that need an account'},
     {'id': 'managed-publishing', 'what': 'Turn managed publishing on/off, press Publish, and "Send '
      'for review" for changes held back', 'where': 'Publishing overview', 'applies': 'when used'},
     {'id': 'tester-emails', 'what': 'Tester email lists (the API only takes Google Groups)',

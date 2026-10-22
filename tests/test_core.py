@@ -110,6 +110,28 @@ def test_init_detects_flutter(capsys, tmp_path):
     assert b'\r\n' in (root / 'mkit.bat').read_bytes()
 
 
+def test_init_leaves_an_env_skeleton(capsys, tmp_path):
+    """The .env is where everybody gets stuck: which keys, what format, from where."""
+    root = tmp_path / 'app'
+    (root / 'android' / 'app').mkdir(parents=True)
+    (root / 'pubspec.yaml').write_text('name: app\nversion: 1.0.0+1\n')
+    run(capsys, 'init', str(root))
+    env = (root / '.env').read_text()
+    assert 'MKIT_PLAY_SERVICE_ACCOUNT_JSON_BASE64' in env
+    # Commented out, so a half-filled .env never looks like a configured one.
+    assert env.count('\n# MKIT_') == 3
+
+
+def test_init_never_overwrites_a_real_env(capsys, tmp_path):
+    """Not even with --force: that file holds the only copy of someone's keys."""
+    root = tmp_path / 'app'
+    (root / 'android' / 'app').mkdir(parents=True)
+    (root / 'pubspec.yaml').write_text('name: app\nversion: 1.0.0+1\n')
+    (root / '.env').write_text('MKIT_PLAY_SERVICE_ACCOUNT_JSON_BASE64=real-key\n')
+    run(capsys, 'init', str(root), '--force')
+    assert (root / '.env').read_text() == 'MKIT_PLAY_SERVICE_ACCOUNT_JSON_BASE64=real-key\n'
+
+
 # ------------------------------------------------------------------ safety
 
 class _Ctx:

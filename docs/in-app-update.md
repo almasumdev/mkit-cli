@@ -1,6 +1,6 @@
 # In-app updates
 
-Every app checks for updates the same way and shows them the same
+Every EazyVerse app checks for updates the same way and shows them the same
 way. The decision logic, the Firebase document `mkit config set` writes, and
 what the user sees are settled here; each app only writes the code in its own
 stack (Flutter or native). Read this before adding or changing update code in

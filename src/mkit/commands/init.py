@@ -115,6 +115,31 @@ activity = ".MainActivity"
 '''
 
 
+ENV_TEMPLATE = """\
+# Secrets for this app. Gitignored, and never committed - `mkit doctor` names
+# the key it wants when one is missing, and prints none of them.
+#
+# Each is the service account JSON, base64 encoded, on one line:
+#   Windows : [Convert]::ToBase64String([IO.File]::ReadAllBytes("key.json"))
+#   macOS   : base64 -i key.json
+#   Linux   : base64 -w0 key.json
+#
+# Anything every app shares goes in ~/.mkit/.env instead of here.
+
+# Google Play, for releases, the listing, products, reviews and vitals.
+# Play Console > Users and permissions, invite the service account.
+# MKIT_PLAY_SERVICE_ACCOUNT_JSON_BASE64=
+
+# Firebase, for Firestore rules, Remote Config and the update document.
+# Project settings > Service accounts > Generate new private key.
+# MKIT_FIREBASE_SERVICE_ACCOUNT_JSON_BASE64=
+
+# A Telegram bot, if this app sends a message after a release.
+# {"bot_token": "...", "chat_id": 123}, base64 encoded.
+# MKIT_TELEGRAM_JSON_BASE64=
+"""
+
+
 def _ensure_gitignored(root, entry='.env'):
     gi = root / '.gitignore'
     text = _read(gi)
@@ -151,6 +176,14 @@ def init(ctx, args):
     written, kept = [], []
     files = {'mkit.toml': render_toml(name, kind, package or ''), 'mkit.bat': BAT, 'mkit.ps1': PS1,
              'mkit.sh': SH}
+    # The .env is the step everybody gets stuck on: which keys, in what format,
+    # from where. A commented skeleton answers all three in the folder where it
+    # is needed. It is never replaced, not even with --force: that file holds
+    # the only copy of somebody's credentials.
+    if not (root / '.env').exists():
+        files['.env'] = ENV_TEMPLATE
+    else:
+        kept.append('.env (exists; left alone)')
     for fname, content in files.items():
         target = root / fname
         if target.exists() and not args.force:

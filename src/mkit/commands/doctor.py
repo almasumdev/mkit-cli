@@ -28,6 +28,17 @@ FEATURE_CREDENTIALS = {
     'notify.telegram': ('TELEGRAM',),
 }
 
+# What each store command needs before it can run at all. A [store] table with
+# none of these is a feature that reports "on" and then fails at the moment
+# somebody tries to use it - which, for a listing, is release day.
+STORE_KEYS = {
+    'listing_dir': 'listing plan/apply',
+    'whatsnew_dir': "whatsnew check, and release notes on deploy",
+    'art_dir': 'art build',
+    'datasafety': 'datasafety build/check/apply',
+    'products': 'products plan/apply',
+}
+
 FEATURE_WHAT = {
     'play': 'Google Play: upload, tracks, listing, products, reviews, vitals',
     'store': 'store listing, art, what\'s new and data safety files',
@@ -122,6 +133,15 @@ def doctor(ctx, args):
                 entry['credentials'] = creds
                 bad = [c for c in creds if c['status'] != 'ok']
                 entry['status'] = 'broken' if bad else 'on'
+                if feature == 'store':
+                    # Not 'broken': the keys that are set still work. It is the
+                    # commands behind the missing ones that are unreachable, and
+                    # saying so here beats discovering it mid-release.
+                    missing = [k for k in STORE_KEYS if not project.get(f'store.{k}')]
+                    entry['missing'] = missing
+                    for key in missing:
+                        report['problems'].append(
+                            f'[store] has no {key}, so `mkit {STORE_KEYS[key]}` cannot run')
                 for c in bad:
                     report['problems'].append(
                         f'[{feature}] {c["name"]} is {c["status"]}'
