@@ -1,0 +1,48 @@
+name: publish
+
+# Publishes to PyPI when a version tag is pushed. No token lives here: PyPI's
+# trusted publishing verifies the workflow's own identity, so there is nothing
+# to leak and nothing to rotate.
+#
+# One-time setup, on https://pypi.org/manage/account/publishing/ :
+#   PyPI project name   mkit-android
+#   Owner               almasumdev
+#   Repository          mkit-android
+#   Workflow            publish.yml
+#   Environment         pypi
+# Then make a release: scripts/release.py minor go && git push --follow-tags
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      # The tag is not a release until the suite says so.
+      - run: uv sync --all-extras --dev
+      - run: uv run pytest -q
+      - run: uv build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write          # what trusted publishing signs with
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

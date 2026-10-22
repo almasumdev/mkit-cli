@@ -7,9 +7,14 @@ it rather than doing the wrong thing.
 
 ## Unreleased
 
-- `mkit doctor` names each missing `[store]` key with the command it blocks,
-  instead of reporting the feature on while `listing`, `art`, `datasafety`
-  or `products` have nowhere to read from.
+- `mkit doctor` lists the store commands an app cannot run, under "not
+  configured" rather than among its problems — and only for the three keys with
+  no fallback (`whatsnew_dir`, `datasafety`, `products`). An app with no in-app
+  purchases has no products file on purpose.
+- The generated command reference no longer depends on whether the source was
+  checked out with CRLF or LF, so it is current on every platform at once.
+- Tagging `v*` builds and publishes to PyPI through trusted publishing, once
+  the project is claimed there. No token is stored in the repository.
 - `mkit manual` lists two more Console-only steps: production access for a new
   personal developer account (12 testers opted in for 14 days of closed
   testing), and App access test credentials for an app behind a sign-in.

@@ -28,13 +28,16 @@ FEATURE_CREDENTIALS = {
     'notify.telegram': ('TELEGRAM',),
 }
 
-# What each store command needs before it can run at all. A [store] table with
-# none of these is a feature that reports "on" and then fails at the moment
-# somebody tries to use it - which, for a listing, is release day.
+# Store keys with **no default**, and the commands that cannot run without
+# them. Only these: `listing_dir` falls back to docs/store-listing, `art_dir` to
+# store/ (or [art] out), and `icon` to the art folder's own icon.png, so their
+# absence blocks nothing. The first version of this check listed all five and
+# told two apps their art was broken when it was not.
+#
+# Not a problem either, even for these three: an app with no in-app purchases
+# has no products file on purpose. It is a note about what this app cannot do.
 STORE_KEYS = {
-    'listing_dir': 'listing plan/apply',
     'whatsnew_dir': "whatsnew check, and release notes on deploy",
-    'art_dir': 'art build',
     'datasafety': 'datasafety build/check/apply',
     'products': 'products plan/apply',
 }
@@ -100,7 +103,7 @@ def doctor(ctx, args):
     report = {
         'engine': {'version': __version__, 'python': platform.python_version(),
                    'executable': sys.executable, 'home': str(config.home())},
-        'project': None, 'tools': [], 'features': [], 'problems': [],
+        'project': None, 'tools': [], 'features': [], 'problems': [], 'unavailable': [],
     }
 
     if project is None:
@@ -134,13 +137,10 @@ def doctor(ctx, args):
                 bad = [c for c in creds if c['status'] != 'ok']
                 entry['status'] = 'broken' if bad else 'on'
                 if feature == 'store':
-                    # Not 'broken': the keys that are set still work. It is the
-                    # commands behind the missing ones that are unreachable, and
-                    # saying so here beats discovering it mid-release.
                     missing = [k for k in STORE_KEYS if not project.get(f'store.{k}')]
                     entry['missing'] = missing
                     for key in missing:
-                        report['problems'].append(
+                        report['unavailable'].append(
                             f'[store] has no {key}, so `mkit {STORE_KEYS[key]}` cannot run')
                 for c in bad:
                     report['problems'].append(
@@ -177,6 +177,11 @@ def _print_report(out, report):
             rows.append((f['feature'], f['status'], creds or f['what']))
         out.table(rows, ('feature', 'status', 'details'))
     out.line()
+    if report.get('unavailable'):
+        out.line('not configured, so these cannot run:', 'dim')
+        for note in report['unavailable']:
+            out.line(f'  {note}', 'dim')
+        out.line()
     if report['problems']:
         out.line(f'{len(report["problems"])} problem(s):', 'yellow')
         for p in report['problems']:

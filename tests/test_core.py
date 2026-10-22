@@ -86,6 +86,25 @@ def test_commands_json_lists_risk_and_schema(capsys):
     assert 'properties' in names['init']['input']
 
 
+def test_doctor_separates_unconfigured_from_broken(capsys, project):
+    """A store command with nowhere to read from is a note, not a problem.
+
+    An app with no in-app purchases has no products file on purpose, and an
+    earlier version of this check called that broken - along with telling two
+    apps their art was unconfigured when `art_dir` had simply defaulted.
+    """
+    (project / 'mkit.toml').write_text(
+        'requires = ">=0.1"\n[app]\nname = "Demo"\nkind = "flutter"\n'
+        'package = "com.example.demo"\n[store]\nwhatsnew_dir = "distribution/whatsnew"\n'
+        'datasafety = "store/ds.csv"\n', encoding='utf-8')
+    _, data = run(capsys, '--project', str(project), 'doctor')
+    notes = data['result']['unavailable']
+    assert any('products' in n for n in notes)
+    assert not any('products' in p for p in data['result']['problems'])
+    # The keys that fall back to a default are never reported at all.
+    assert not any('art_dir' in n or 'listing_dir' in n or 'icon' in n for n in notes)
+
+
 def test_doctor_reports_missing_credentials(capsys, project):
     code, data = run(capsys, '--project', str(project), 'doctor')
     features = {f['feature']: f['status'] for f in data['result']['features']}
