@@ -7,6 +7,8 @@ it rather than doing the wrong thing.
 
 ## Unreleased
 
+## 0.4.0 — 2026-10-23
+
 **Guides.** `mkit guide` reads the guides every app follows — the About screen,
 in-app review, in-app updates, ASO, support replies, app UI, the store folder,
 store art, news notifications — filled in with your studio's details from

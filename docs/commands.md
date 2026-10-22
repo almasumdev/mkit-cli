@@ -1,6 +1,6 @@
 # mkit command reference
 
-Generated from the command registry (mkit 0.3.x). Do not edit by hand: run `python scripts/gen_docs.py`.
+Generated from the command registry (mkit 0.4.x). Do not edit by hand: run `python scripts/gen_docs.py`.
 
 Global options, accepted before or after any command: `--json`, `--human`, `--project PATH`, `--dry-run`, `--strict`, `--yes --confirm PACKAGE`, `--no-color`.
 
