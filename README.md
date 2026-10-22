@@ -1,5 +1,8 @@
 # mkit
 
+[![tests](https://github.com/almasumdev/mkit-android/actions/workflows/tests.yml/badge.svg)](https://github.com/almasumdev/mkit-android/actions/workflows/tests.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+
 One command-line tool for everything around an Android app that is not writing
 it: build and install on a device, release to Google Play, keep the store
 listing, screenshots, data safety and in-app products in your repo, read
@@ -116,6 +119,7 @@ and what an agent must never do.
 | [docs/news-topics.md](docs/news-topics.md) | news and offer notifications over FCM topics |
 | [AGENTS.md](AGENTS.md) | the agent contract |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | changing mkit, tests, versioning |
+| [SECURITY.md](SECURITY.md) | what counts as a security bug here, and how to report it |
 
 ## Status and scope
 

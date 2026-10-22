@@ -1,0 +1,58 @@
+name: Bug report
+description: A command did the wrong thing, or stopped doing anything
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not paste a service account key or a `.env`.
+        `mkit <command> --json` is safe to share: it names missing credentials
+        and prints none of them.
+
+  - type: input
+    id: command
+    attributes:
+      label: The command
+      placeholder: mkit deploy --dry-run
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: What it printed
+      description: The JSON envelope if you have it — `mkit <command> --json`.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: App kind
+      options: [flutter, android, android-wear, not sure]
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: mkit and OS
+      description: "`mkit --version`, and which OS."
+      placeholder: "0.3.1 on Windows 11"
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: mkit doctor --json
+      description: Optional, and safe to paste — it never prints a secret.
+      render: json

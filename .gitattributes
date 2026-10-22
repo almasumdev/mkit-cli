@@ -1,0 +1,19 @@
+# Everything text lands in the working tree as LF, on every platform.
+#
+# Not a preference. mkit generates docs/commands.md from docstrings in the
+# source, so a checkout that rewrote those files to CRLF made the generator
+# produce a different reference than the one in the repo — the suite went red
+# on Windows for a file nobody had touched. Pinning the endings removes the
+# whole class of it.
+* text=auto eol=lf
+
+# Shell scripts must stay LF wherever they run.
+*.sh text eol=lf
+
+# Binary, never touched.
+*.png binary
+*.jpg binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.woff2 binary
