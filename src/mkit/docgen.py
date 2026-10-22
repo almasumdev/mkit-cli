@@ -77,7 +77,13 @@ def render():
             lines += ['', f'### mkit {c.name}', '', f'`{c.risk}`'
                       + (f', needs `[{"]`, `[".join(c.needs)}]` in mkit.toml' if c.needs else ''), '']
             text = c.description or c.summary
-            lines += [text.split('\n\n')[0].replace('\n', ' ').strip(), '', '```', _usage(c), '```']
+            # Collapse the whitespace rather than swapping newlines for spaces: a
+            # source file checked out with CRLF leaves a stray carriage return in
+            # the middle of the line, so the same command rendered differently on
+            # Windows than on Linux and the committed reference could not be
+            # current on both at once. CI found this the day it was switched on.
+            summary = ' '.join(text.split('\n\n')[0].split())
+            lines += [summary, '', '```', _usage(c), '```']
             if c.args:
                 lines += ['', '| Argument | What |', '|---|---|']
                 for a in c.args:
