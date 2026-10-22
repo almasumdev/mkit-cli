@@ -7,8 +7,8 @@ release day.
 ## Getting set up
 
 ```bash
-git clone https://github.com/almasumdev/mkit-android
-cd mkit-android
+git clone https://github.com/almasumdev/mkit-cli
+cd mkit-cli
 uv sync                 # or: pip install -e ".[dev]"
 uv run pytest           # the whole suite, against a fake Play service
 ```

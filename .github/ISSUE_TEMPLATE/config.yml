@@ -1,11 +1,11 @@
 blank_issues_enabled: true
 contact_links:
   - name: Something only Play Console can do
-    url: https://github.com/almasumdev/mkit-android/blob/main/docs/commands.md
+    url: https://github.com/almasumdev/mkit-cli/blob/main/docs/commands.md
     about: >-
       Creating an app, content rating, target audience, tester email lists,
       production access and App access credentials have no API. `mkit manual`
       lists them — those are not bugs in mkit.
   - name: Security issue
-    url: https://github.com/almasumdev/mkit-android/security/advisories/new
+    url: https://github.com/almasumdev/mkit-cli/security/advisories/new
     about: Anything exposing a credential or publishing without confirmation. Please report privately.

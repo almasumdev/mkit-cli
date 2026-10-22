@@ -1,7 +1,7 @@
 # mkit
 
-[![tests](https://github.com/almasumdev/mkit-android/actions/workflows/tests.yml/badge.svg)](https://github.com/almasumdev/mkit-android/actions/workflows/tests.yml)
-[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![tests](https://github.com/almasumdev/mkit-cli/actions/workflows/tests.yml/badge.svg)](https://github.com/almasumdev/mkit-cli/actions/workflows/tests.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/almasumdev/mkit-cli/blob/main/LICENSE)
 
 One command-line tool for everything around an Android app that is not writing
 it: build and install on a device, release to Google Play, keep the store
@@ -39,15 +39,21 @@ differ.
 
 ## Install
 
-Requires Python 3.11+ and git. [uv](https://docs.astral.sh/uv/) is the easiest
-way in:
+Requires Python 3.11 or newer. [uv](https://docs.astral.sh/uv/) is the easiest
+way in, and installs mkit as a command of its own rather than into a project:
 
 ```bash
-uv tool install git+https://github.com/almasumdev/mkit-android
+uv tool install mkit-cli
 mkit --version
 ```
 
-Or with pipx: `pipx install git+https://github.com/almasumdev/mkit-android`.
+With pipx: `pipx install mkit-cli`. With pip: `pip install mkit-cli`.
+
+The latest from `main`, between releases:
+`uv tool install git+https://github.com/almasumdev/mkit-cli`
+
+`mkit self status` says whether a newer release is out, and `mkit self update`
+gives the upgrade command for whichever of these installed it.
 
 ## Getting started
 
@@ -75,7 +81,7 @@ listing_dir = "store/listing"
 Credentials never live in that file. A Google Play service account goes in
 `.env` (per app) or `~/.mkit/.env` (shared); `mkit doctor` names the exact key
 when one is missing, and never prints a secret. Every setting is documented in
-[docs/config.md](docs/config.md).
+[docs/config.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/config.md).
 
 ## What it does
 
@@ -88,7 +94,7 @@ when one is missing, and never prints a secret. Every setting is documented in
 | **Insight** | `stats`, `vitals`, `crashes`, `reviews`, `aso` |
 | **Firebase** | `rules`, `config`, `remoteconfig`, `firebase` |
 
-Every command, flag and example: [docs/commands.md](docs/commands.md),
+Every command, flag and example: [docs/commands.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/commands.md),
 generated from the code so it cannot describe a flag that does not exist.
 
 Commands are classed by what they can change — `read`, `plan`, `write`,
@@ -103,7 +109,7 @@ time.
 
 mkit answers in JSON whenever it is not attached to a terminal, with one
 envelope on stdout and a documented exit code per outcome, so an agent can
-branch on a result instead of reading prose. [AGENTS.md](AGENTS.md) is the
+branch on a result instead of reading prose. [AGENTS.md](https://github.com/almasumdev/mkit-cli/blob/main/AGENTS.md) is the
 contract: which commands are safe to run unasked, which need a human to say so,
 and what an agent must never do.
 
@@ -111,15 +117,15 @@ and what an agent must never do.
 
 | | |
 |---|---|
-| [docs/commands.md](docs/commands.md) | every command and flag |
-| [docs/config.md](docs/config.md) | `mkit.toml`, the store and keyword files, credentials |
-| [docs/store.md](docs/store.md) | the `store/` folder: what lives where, in every language |
-| [docs/store-art.md](docs/store-art.md) | screenshots and the feature graphic, built from real captures |
-| [docs/in-app-update.md](docs/in-app-update.md) | how an app should check for updates: Play first, your policy second |
-| [docs/news-topics.md](docs/news-topics.md) | news and offer notifications over FCM topics |
-| [AGENTS.md](AGENTS.md) | the agent contract |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | changing mkit, tests, versioning |
-| [SECURITY.md](SECURITY.md) | what counts as a security bug here, and how to report it |
+| [docs/commands.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/commands.md) | every command and flag |
+| [docs/config.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/config.md) | `mkit.toml`, the store and keyword files, credentials |
+| [docs/store.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/store.md) | the `store/` folder: what lives where, in every language |
+| [docs/store-art.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/store-art.md) | screenshots and the feature graphic, built from real captures |
+| [docs/in-app-update.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/in-app-update.md) | how an app should check for updates: Play first, your policy second |
+| [docs/news-topics.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/news-topics.md) | news and offer notifications over FCM topics |
+| [AGENTS.md](https://github.com/almasumdev/mkit-cli/blob/main/AGENTS.md) | the agent contract |
+| [CONTRIBUTING.md](https://github.com/almasumdev/mkit-cli/blob/main/CONTRIBUTING.md) | changing mkit, tests, versioning |
+| [SECURITY.md](https://github.com/almasumdev/mkit-cli/blob/main/SECURITY.md) | what counts as a security bug here, and how to report it |
 
 ## Status and scope
 
@@ -138,4 +144,4 @@ like to hear what broke.
 
 ## Licence
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/almasumdev/mkit-cli/blob/main/LICENSE).

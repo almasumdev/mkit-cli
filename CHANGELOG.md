@@ -7,46 +7,51 @@ it rather than doing the wrong thing.
 
 ## Unreleased
 
-- `mkit doctor` lists the store commands an app cannot run, under "not
-  configured" rather than among its problems — and only for the three keys with
-  no fallback (`whatsnew_dir`, `datasafety`, `products`). An app with no in-app
-  purchases has no products file on purpose.
-- The generated command reference no longer depends on whether the source was
-  checked out with CRLF or LF, so it is current on every platform at once.
-- Tagging `v*` builds and publishes to PyPI through trusted publishing, once
-  the project is claimed there. No token is stored in the repository.
-- `mkit manual` lists two more Console-only steps: production access for a new
-  personal developer account (12 testers opted in for 14 days of closed
-  testing), and App access test credentials for an app behind a sign-in.
-- `mkit init` writes a commented `.env` naming every credential, where it
-  comes from and how to encode it. An existing `.env` is never replaced, not
-  even with `--force`.
-- Tests run on GitHub Actions: Linux, macOS and Windows, Python 3.11 and 3.13,
-  with a check that the generated command reference is current.
-
 ## 0.3.1 — first public release
 
 mkit shipped a small studio's Android apps for a year before this; this is that
 tool, with the studio's own house style and private services taken out. What is
 here is the engine.
 
-- **Release.** `mkit deploy` in one command: preflight, a commit for whatever
-  was already uncommitted, the version bump in its own commit, Firestore rules,
-  the release build, the upload with mapping and release notes, the in-app
-  update document, a Telegram message, and a push. A failure before Play
-  accepts the build undoes the bump commit — and only if it is still at HEAD,
-  so it can never drop someone else's work. `promote`, `rollout` and `share`
-  move a build on from there.
-- **Store.** The listing, what's new, screenshots, the feature graphic, data
-  safety and in-app products all live in the repo, in every language, with
-  `plan` showing the difference against Play before `apply` sends it. `mkit art
-  build` draws the screenshots from real device captures.
-- **Insight.** `stats`, `vitals`, `crashes`, `reviews`, and `aso rank` /
-  `aso score` for where an app sits in Play search.
-- **Firebase.** Firestore rules, Remote Config (`plan`, `apply`, `pull`,
-  `rollback`), and an in-app update document the app reads at startup.
-- **Devices.** `run` builds and installs on a phone or emulator, `logs`
-  follows just that app, `studio` opens the project in Android Studio.
-- **For agents.** JSON output off a terminal, one envelope per run, an exit
-  code per outcome, a risk class per command, and a confirmation that
-  publish-class commands will not run without.
+**Release.** `mkit deploy` in one command: preflight, a commit for whatever was
+already uncommitted, the version bump in its own commit, Firestore rules, the
+release build, the upload with mapping and release notes, the in-app update
+document, a Telegram message, and a push. A failure before Play accepts the
+build undoes the bump commit — and only if it is still at HEAD, so it can never
+drop someone else's work. `promote`, `rollout` and `share` move a build on from
+there.
+
+**Store.** The listing, what's new, screenshots, the feature graphic, data
+safety and in-app products all live in the repo, in every language, with `plan`
+showing the difference against Play before `apply` sends it. `mkit art build`
+draws the screenshots from real device captures.
+
+**Insight.** `stats`, `vitals`, `crashes`, `reviews`, and `aso rank` /
+`aso score` for where an app sits in Play search.
+
+**Firebase.** Firestore rules, Remote Config (`plan`, `apply`, `pull`,
+`rollback`), and an in-app update document the app reads at startup.
+
+**Devices.** `run` builds and installs on a phone or emulator, `logs` follows
+just that app, `studio` opens the project in Android Studio.
+
+**Getting started.** `mkit init` writes `mkit.toml` and a commented `.env`
+naming every credential, where it comes from and how to encode it; an existing
+`.env` is never replaced, not even with `--force`. `mkit doctor` says what is
+configured, what is broken, and which store commands an app cannot run because
+it has no file for them. `mkit manual` lists the Play Console steps that have no
+API — including production access for a new personal account and App access
+credentials for an app behind a sign-in.
+
+**Staying current.** `mkit self status` says whether a newer release is on PyPI,
+and `mkit self update` names the upgrade command for whichever of uv, pipx or
+pip installed it.
+
+**For agents.** JSON output off a terminal, one envelope per run, an exit code
+per outcome, a risk class per command, and a confirmation that publish-class
+commands will not run without.
+
+**Built and tested** on Linux, macOS and Windows against Python 3.11 and 3.13,
+with a check that the generated command reference matches the code on every
+platform. Releases publish to PyPI from a version tag through trusted
+publishing, with no token stored anywhere.

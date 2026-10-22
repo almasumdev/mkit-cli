@@ -13,11 +13,15 @@ left alone unless --force is given.
 import re
 from pathlib import Path
 
+from .. import __version__
 from ..errors import UsageError
 from ..registry import Arg, command
 
 # No < > | & here: the text is echoed by cmd.exe, which reads those as redirects.
-INSTALL_HINT = 'Install it with: uv tool install -e PATH_TO_MKIT_REPO'
+# The engine that writes a new mkit.toml is the oldest one known to read it.
+REQUIRES = '.'.join(__version__.split('.')[:2])
+
+INSTALL_HINT = 'Install it with: uv tool install mkit-cli  (or pipx install mkit-cli)'
 
 # mkit.exe by full name: plain `mkit` from inside mkit.bat can resolve to this
 # very file (cmd searches the current folder first) and call itself forever.
@@ -87,7 +91,7 @@ def detect(root):
 def render_toml(name, kind, package):
     return f'''# mkit settings for {name}. Secrets never go here: they live in .env
 # (this app) and ~/.mkit/.env (all apps). `mkit doctor` checks everything.
-requires = ">=0.1"
+requires = ">={REQUIRES}"
 
 [app]
 name     = "{name}"

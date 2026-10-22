@@ -135,8 +135,8 @@ def load(start=None, project=None):
     spec = data.get('requires')
     if spec and not check_requires(spec):
         raise MkitError(f'this project needs mkit {spec}, but {__version__} is installed',
-                        hint='Update the engine: `git -C <mkit repo> pull` '
-                             '(an editable install picks it up immediately).',
+                        hint='Run `mkit self update`: it upgrades a git checkout, or names '
+                             'the command for the package manager that installed mkit.',
                         code='ENGINE_TOO_OLD')
 
     kind = _dig(data, 'app.kind')

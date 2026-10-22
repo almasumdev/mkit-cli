@@ -49,6 +49,7 @@ FEATURE_WHAT = {
     'notify.telegram': 'Telegram message after deploy and promote',
     'aso': 'keyword rank and winnability checks',
     'hooks': 'project-specific scripts at fixed pipeline points',
+    'art': 'Play screenshots and the feature graphic, drawn from device captures',
 }
 
 

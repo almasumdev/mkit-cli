@@ -6,7 +6,7 @@ so a bug here can be worth more than the tool is.
 ## Reporting
 
 Use GitHub's private advisory form:
-[Report a vulnerability](https://github.com/almasumdev/mkit-android/security/advisories/new).
+[Report a vulnerability](https://github.com/almasumdev/mkit-cli/security/advisories/new).
 Please do not open a public issue for anything that exposes a secret or lets a
 command publish without confirmation.
 

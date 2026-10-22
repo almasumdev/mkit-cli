@@ -853,8 +853,8 @@ mkit rules
 | `init` | write | Link this app folder to mkit (mkit.toml + launchers) |
 | `manual` | read | What only Play Console can do (no API), as a checklist |
 | `schema` | read | Input schema and details of one command |
-| `self status` | read | The engine's version, where it runs from, and whether it is behind |
-| `self update` | write | Pull the latest engine; every app uses it immediately |
+| `self status` | read | The engine's version, how it was installed, and whether a newer one exists |
+| `self update` | write | Update mkit: pull an editable checkout, or name the upgrade command |
 
 ### mkit commands
 
@@ -956,7 +956,7 @@ mkit schema listing plan
 
 `read`
 
-The engine's version, where it runs from, and whether it is behind
+The engine's version, how it was installed, and whether a newer one exists
 
 ```
 mkit self status
@@ -966,7 +966,7 @@ mkit self status
 
 `write`
 
-Pull the latest engine; every app uses it immediately
+Update mkit: pull an editable checkout, or name the upgrade command
 
 ```
 mkit self update

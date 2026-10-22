@@ -5,9 +5,9 @@ name: publish
 # to leak and nothing to rotate.
 #
 # One-time setup, on https://pypi.org/manage/account/publishing/ :
-#   PyPI project name   mkit-android
+#   PyPI project name   mkit-cli
 #   Owner               almasumdev
-#   Repository          mkit-android
+#   Repository          mkit-cli
 #   Workflow            publish.yml
 #   Environment         pypi
 # Then make a release: scripts/release.py minor go && git push --follow-tags

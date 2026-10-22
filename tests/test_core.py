@@ -151,6 +151,45 @@ def test_init_never_overwrites_a_real_env(capsys, tmp_path):
     assert (root / '.env').read_text() == 'MKIT_PLAY_SERVICE_ACCOUNT_JSON_BASE64=real-key\n'
 
 
+def test_self_update_on_a_package_install_names_the_command(capsys, monkeypatch):
+    """A PyPI install cannot replace its own running mkit.exe, so it says what to run.
+
+    It used to tell everyone to reinstall from "<path to the mkit repo>", which
+    is a repo a package user has never had.
+    """
+    from mkit.commands import selfcmd
+    monkeypatch.setattr(selfcmd, 'engine_repo', lambda: None)
+    code, data = run(capsys, 'self', 'update')
+    assert code == 0
+    assert data['result']['changed'] is False
+    assert data['result']['upgrade_command'].endswith('mkit-cli')
+
+
+def test_upgrade_command_follows_the_manager_that_installed_it():
+    from mkit.commands.selfcmd import upgrade_command
+    assert upgrade_command(r'C:\Users\a\AppData\Roaming\uv\tools\mkit-cli\Scripts\python.exe') \
+        == 'uv tool upgrade mkit-cli'
+    assert upgrade_command('/home/a/.local/share/pipx/venvs/mkit-cli/bin/python') == 'pipx upgrade mkit-cli'
+    assert upgrade_command('/usr/bin/python3') == 'pip install --upgrade mkit-cli'
+
+
+def test_self_status_on_a_package_install_reports_a_newer_release(capsys, monkeypatch):
+    from mkit.commands import selfcmd
+    monkeypatch.setattr(selfcmd, 'engine_repo', lambda: None)
+    monkeypatch.setattr(selfcmd, 'latest_on_pypi', lambda timeout=4: '99.0.0')
+    _, data = run(capsys, 'self', 'status')
+    assert data['result']['install'] == 'package'
+    assert data['result']['outdated'] is True
+
+
+def test_self_status_offline_is_not_an_error(capsys, monkeypatch):
+    from mkit.commands import selfcmd
+    monkeypatch.setattr(selfcmd, 'engine_repo', lambda: None)
+    monkeypatch.setattr(selfcmd, 'latest_on_pypi', lambda timeout=4: None)
+    code, data = run(capsys, 'self', 'status')
+    assert code == 0 and data['result']['outdated'] is False
+
+
 # ------------------------------------------------------------------ safety
 
 class _Ctx:
