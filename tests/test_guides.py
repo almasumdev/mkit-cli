@@ -109,3 +109,34 @@ def test_the_wheel_packs_every_guide():
         pytest.skip('this build does not package the guides')
     for filename, _ in guides.GUIDES.values():
         assert f'"docs/{filename}" = "mkit/_guides/{filename}"' in text, filename
+
+
+def test_an_app_adds_its_own_rules_last(capsys, isolated, project, monkeypatch, tmp_path):
+    house = tmp_path / 'house'
+    house.mkdir()
+    (house / 'app-ui.md').write_text('Studio look.\n', encoding='utf-8')
+    monkeypatch.setenv('MKIT_GUIDE_HOUSE_DIR', str(house))
+    (project / 'docs' / 'guides').mkdir(parents=True)
+    (project / 'docs' / 'guides' / 'app-ui.md').write_text('Cards everywhere in {{app.name}}.\n',
+                                                           encoding='utf-8')
+    monkeypatch.chdir(project)
+    code, env = run(capsys, 'guide', 'ui')
+    text = env['result']['text']
+    assert code == 0 and env['result']['app'] and not env['result']['replaced']
+    assert '## Colours from one place' in text
+    assert text.index('Studio look.') < text.index("## This app's own rules")
+    assert text.rstrip().endswith('Cards everywhere in Demo.')
+
+
+def test_an_app_can_replace_a_guide_outright(capsys, isolated, no_house, project, monkeypatch):
+    with open(project / 'mkit.toml', 'a', encoding='utf-8') as f:
+        f.write('[guide]\napp_dir = "design"\nreplace = ["about"]\n')
+    (project / 'design').mkdir()
+    (project / 'design' / 'about-screen.md').write_text('# Our About page\n\nOne line.\n',
+                                                        encoding='utf-8')
+    monkeypatch.chdir(project)
+    code, env = run(capsys, 'guide', 'about')
+    assert code == 0 and env['result']['replaced']
+    assert env['result']['text'].strip() == '# Our About page\n\nOne line.'
+    code, env = run(capsys, 'guide', 'ui')
+    assert env['result']['app'] is None and '## Colours from one place' in env['result']['text']

@@ -128,13 +128,26 @@ signoff = "The <App> team"    # the line above the email address
 
 [guide]
 house_dir = "~/studio/house"  # this studio's own rules, one file per guide
+# In an app's mkit.toml:
+# app_dir = "docs/guides"     # this app's own rules (the default)
+# replace = ["ui"]            # guides this app does its own way, start to finish
 ```
 
-A studio's own decisions beside a guide — its worked examples, a look its apps
-share, a rule it chose differently — go in `house_dir`, in a file named like the
-guide's (`about-screen.md`, `in-app-review.md`, ...). `mkit guide` appends it
-under *This studio's own rules*, which win where the two disagree. Without
-`house_dir`, mkit looks in `docs/house/` beside its own source checkout.
+A guide is read in three layers, each winning over the one before:
+
+1. **The guide** — the same for everyone.
+2. **The studio's rules** — `house_dir/<file>`: its worked examples, a look its
+   apps share, a rule it chose differently. Appended under *This studio's own
+   rules*. Without `house_dir`, mkit looks in `docs/house/` beside its own
+   source checkout.
+3. **The app's rules** — `<app>/docs/guides/<file>` in the app's own repo, or
+   `app_dir`. Appended last, under *This app's own rules*: its own layout idea,
+   a part it does differently, the components to use. An app that lists the
+   guide in `replace` uses its file alone, and neither layer above is read.
+
+The file is named like the guide's: `about-screen.md`, `app-ui.md`,
+`in-app-review.md` — `mkit guide` lists them. Placeholders work in all three,
+`{{app.name}}` included.
 
 ## Store listing file
 

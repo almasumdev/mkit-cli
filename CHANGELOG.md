@@ -7,6 +7,15 @@ it rather than doing the wrong thing.
 
 ## Unreleased
 
+## 0.5.0 — 2026-10-23
+
+**An app can keep its own version of any guide.** A file named like the guide
+in the app's repo — `docs/guides/about-screen.md`, `docs/guides/app-ui.md`, or
+under `[guide] app_dir` — is added after the guide and the studio's own rules,
+under *This app's own rules*, and wins over both. `[guide] replace = ["ui"]` in
+the app's `mkit.toml` makes that file the whole guide. Placeholders work in it,
+`{{app.name}}` included, and `mkit guide --json` reports `app` and `replaced`.
+
 ## 0.4.0 — 2026-10-23
 
 **Guides.** `mkit guide` reads the guides every app follows — the About screen,

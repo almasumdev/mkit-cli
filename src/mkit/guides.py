@@ -25,6 +25,10 @@ for it and nobody else - in a house folder: the file of the same name, which is
 appended after the guide under a heading saying it overrides what it
 contradicts. By default that folder is docs/house in the engine's own git
 checkout; [guide] house_dir points anywhere else.
+
+An app may keep its own on top, in its own repo: docs/guides/<file> (or
+[guide] app_dir), appended last and winning over both. An app that names a
+guide in [guide] replace uses its own file alone.
 """
 import os
 import re
@@ -129,20 +133,50 @@ def _keep_parts(text, enabled):
     return '\n'.join(out)
 
 
+def app_file(filename, project):
+    """The app's own version of a guide, in its repo: docs/guides/ unless [guide] app_dir says."""
+    if project is None:
+        return None
+    folder = project.root / project.get('guide.app_dir', 'docs/guides')
+    found = folder / filename
+    return found if found.is_file() else None
+
+
+def _append(text, heading, note, extra):
+    return (text.rstrip('\n') + f'\n\n---\n\n## {heading}\n\n*{note}*\n\n'
+            + extra.read_text(encoding='utf-8').strip() + '\n')
+
+
 def render(name, project=None, raw=False):
-    """The guide as text, filled in for this studio. Returns (text, info)."""
+    """The guide as text, filled in for this studio and app. Returns (text, info).
+
+    Three layers, each winning over the one before: the guide, the studio's
+    house rules, the app's own file. An app that lists the guide in
+    [guide] replace uses its own file alone.
+    """
     filename, _ = GUIDES[name]
     path = _locate(filename)
     if path is None:
         raise FileNotFoundError(filename)
-    text = path.read_text(encoding='utf-8')
     get = settings(project)
-    house = house_file(filename, get)
-    if house:
-        text = (text.rstrip('\n') + '\n\n---\n\n## This studio\'s own rules\n\n'
-                '*Kept by this studio, beside the guide above. Where the two disagree, '
-                'these win.*\n\n' + house.read_text(encoding='utf-8').strip() + '\n')
-    info = {'guide': name, 'file': str(path), 'house': str(house) if house else None, 'unset': []}
+    app = app_file(filename, project)
+    replaced = app is not None and name in (get('guide.replace') or ())
+    if replaced:
+        text, house = app.read_text(encoding='utf-8'), None
+    else:
+        text = path.read_text(encoding='utf-8')
+        house = house_file(filename, get)
+        if house:
+            text = _append(text, "This studio's own rules",
+                           'Kept by this studio, beside the guide above. Where the two disagree, '
+                           'these win.', house)
+        if app:
+            text = _append(text, "This app's own rules",
+                           "Kept in this app's repo. Where they disagree with anything above, "
+                           'they win.', app)
+    info = {'guide': name, 'file': str(app if replaced else path),
+            'house': str(house) if house else None, 'app': str(app) if app else None,
+            'replaced': replaced, 'unset': []}
     if raw:
         return text, info
 

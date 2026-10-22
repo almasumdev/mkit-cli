@@ -25,7 +25,8 @@ def guide(ctx, args):
             out.table([(r['name'], r['about']) for r in rows], ('name', 'what it covers'))
             out.line()
             out.line('Read one with `mkit guide <name>`. Your details come from [studio] and [about] '
-                     'in ~/.mkit/config.toml or this app\'s mkit.toml.', 'dim')
+                     'in ~/.mkit/config.toml or this app\'s mkit.toml; an app\'s own rules go in '
+                     'its docs/guides/<file>.', 'dim')
         return {'guides': rows}
 
     try:

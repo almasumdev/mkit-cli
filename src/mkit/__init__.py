@@ -2,4 +2,4 @@
 
 # The one place the engine version lives (pyproject.toml reads it from here).
 # Semantic versioning; see CONTRIBUTING.md.
-__version__ = '0.4.0'
+__version__ = '0.5.0'
