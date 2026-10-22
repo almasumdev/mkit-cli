@@ -21,7 +21,7 @@ SECTIONS = (
     ('Money', ('products', 'prices')),
     ('Insight', ('stats', 'vitals', 'crashes', 'reviews', 'aso')),
     ('Firebase', ('rules', 'config', 'remoteconfig', 'firebase')),
-    ('About mkit', ('doctor', 'commands', 'schema', 'manual', 'init', 'self')),
+    ('About mkit', ('doctor', 'commands', 'schema', 'manual', 'guide', 'init', 'self')),
 )
 
 

@@ -17,7 +17,7 @@ variables (`MKIT_APP_PACKAGE` for `app.package`), this file,
 requires = ">=0.2"            # oldest engine this app works with
 
 [app]
-name = "Listkin"              # used in output and Telegram messages
+name = "Tally"                # used in output and Telegram messages
 kind = "flutter"              # flutter | android | android-wear
 package = "com.example.app"
 activity = ".MainActivity"    # optional
@@ -89,6 +89,53 @@ no_prompt = ["deploy", "promote"]  # a person at a terminal is not asked to type
 terminal; the command still prints what it is about to change. Off a terminal
 (an agent, a script) those commands still refuse without `--yes --confirm`.
 
+## Studio details (mkit guide)
+
+`mkit guide <name>` fills its guides in from these. They are the same for every
+app, so they usually live in `~/.mkit/config.toml`; an app's `mkit.toml` wins
+where it differs. Anything a guide needs and you have not set shows as ‹key›,
+and the command lists them.
+
+```toml
+[studio]
+name = "Acme Apps"
+tagline = "Small tools, done properly."
+email = "hello@acme.dev"            # users and clients write here
+website = "https://acme.dev"
+privacy_url = "https://acme.dev/privacy"
+terms_url = "https://acme.dev/terms"
+play_developer_id = "1234567890123456789"   # the id in your Play developer page URL
+developer = "Ada Example"
+developer_role = "Mobile app developer at Acme Apps"
+portfolio = "https://ada.example"
+photo = "https://github.com/ada-example.png?size=460"
+
+[about]                       # the About screen (mkit guide about)
+# The parts it has, in this order; leave one out to drop it. Default: all nine.
+parts = ["mark", "name", "version", "what", "rating", "maker", "ask", "more_apps", "footer"]
+# Its words; <App> stands for the app's name. Each has a default.
+rating_heading = "Enjoying <App>?"
+rating_line = "Rate it on Google Play and support our work."
+maker_heading = "Meet the developer"
+ask = "We design and build mobile apps. <App> is one of ours. If you have one in mind, tell us about it."
+email_button = "Start a project"
+website_button = "Website"
+more_heading = "More from us"
+more_line = "Everything we have on the store, in one place."
+
+[support]                     # replies to users (mkit guide support)
+signoff = "The <App> team"    # the line above the email address
+
+[guide]
+house_dir = "~/studio/house"  # this studio's own rules, one file per guide
+```
+
+A studio's own decisions beside a guide — its worked examples, a look its apps
+share, a rule it chose differently — go in `house_dir`, in a file named like the
+guide's (`about-screen.md`, `in-app-review.md`, ...). `mkit guide` appends it
+under *This studio's own rules*, which win where the two disagree. Without
+`house_dir`, mkit looks in `docs/house/` beside its own source checkout.
+
 ## Store listing file
 
 `listing_dir/<code>.md`, any text around three fenced blocks:
@@ -96,7 +143,7 @@ terminal; the command still prints what it is about to change. Off a terminal
 ````markdown
 ## Title
 ```
-Listkin: Family Shopping List
+Tally: Family Shopping List
 ```
 ## Short description
 ```

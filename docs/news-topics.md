@@ -3,8 +3,7 @@
 The occasional notification to a group of users (a new feature, an offer, a
 note to everyone on an old version) is sent from the Firebase console
 (Messaging, "New campaign" > "Notifications") to FCM topics. No backend and no
-per-user data: the phone joins topics, the console picks them. Value Guard
-and ListKin do it this way; every app should, so a campaign is aimed the same
+per-user data: the phone joins topics, the console picks them. Every app should do it this way, so a campaign is aimed the same
 way everywhere.
 
 ## Fixed in every app
@@ -52,14 +51,3 @@ that starts the app waits until the home screen is up before opening anything.
 **Privacy.** The app's privacy policy says it: the phone joins a few
 notification groups (everyone, free or Pro, the app's language) when News and
 offers is on, no other data is used, and turning it off leaves them.
-
-## Per app
-
-Only the code in its own stack (where the switch lives, how Pro and the
-language are read, how Pro opens) and the wording of the switch in its
-catalogs.
-
-| App | Where |
-|---|---|
-| Value Guard | `lib/data/news_topics.dart`, `lib/data/notification_service.dart` |
-| ListKin | `lib/services/news_topics.dart`, `lib/services/notification_service.dart` |

@@ -7,6 +7,33 @@ it rather than doing the wrong thing.
 
 ## Unreleased
 
+**Guides.** `mkit guide` reads the guides every app follows — the About screen,
+in-app review, in-app updates, ASO, support replies, app UI, the store folder,
+store art, news notifications — filled in with your studio's details from
+`[studio]`, `[about]` and `[support]` in `~/.mkit/config.toml` or an app's
+`mkit.toml`. They ship inside the package, so they work offline. Anything not
+set shows as ‹key› and is listed; `--raw` gives the guide as written.
+
+- **The About screen is yours to shape.** `[about] parts` picks which of its
+  nine parts an app has, and every line it says has an `[about]` key with a
+  default.
+- **Your own rules beside a guide.** A file of the same name in
+  `[guide] house_dir` is appended under *This studio's own rules*, and wins
+  where the two disagree.
+- Five guides are new to this repo: about-screen, in-app-review, aso,
+  support-replies and app-ui.
+
+**`--dry-run` can no longer quietly make the change.** `mkit init --dry-run`
+wrote every file it was meant to preview, and twelve other write-class commands
+ignored the flag the same way: `bump` committed, `share` uploaded, `firebase
+sha-add` changed the Firebase project. Commands now declare whether they
+support a dry run, and the CLI refuses `--dry-run` for any that do not — exit 2,
+`NO_DRY_RUN` — before anything runs. `init` and `bump` preview for real. Every
+publish-class command already honoured it and still does.
+
+- `mkit commands --json` reports `dry_run` per command, so an agent can tell in
+  advance which commands it can rehearse.
+
 ## 0.3.1 — first public release
 
 mkit shipped a small studio's Android apps for a year before this; this is that

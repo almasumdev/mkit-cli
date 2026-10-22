@@ -51,5 +51,17 @@ path = "src/mkit/__init__.py"
 [tool.hatch.build.targets.wheel]
 packages = ["src/mkit"]
 
+# The guides `mkit guide` reads, inside the package so they work offline.
+[tool.hatch.build.targets.wheel.force-include]
+"docs/about-screen.md" = "mkit/_guides/about-screen.md"
+"docs/in-app-review.md" = "mkit/_guides/in-app-review.md"
+"docs/in-app-update.md" = "mkit/_guides/in-app-update.md"
+"docs/aso.md" = "mkit/_guides/aso.md"
+"docs/support-replies.md" = "mkit/_guides/support-replies.md"
+"docs/app-ui.md" = "mkit/_guides/app-ui.md"
+"docs/store.md" = "mkit/_guides/store.md"
+"docs/store-art.md" = "mkit/_guides/store-art.md"
+"docs/news-topics.md" = "mkit/_guides/news-topics.md"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

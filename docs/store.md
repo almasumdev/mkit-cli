@@ -128,8 +128,7 @@ an explicit go:
 
 `store/README.md` holds what is particular to the app: the facts its listing
 may claim, its keyword strategy, its languages and titles, what each
-screenshot shows. Keep it current with the rest of the folder. Value Guard's
-is the reference.
+screenshot shows. Keep it current with the rest of the folder.
 
 ## Moving an app over
 

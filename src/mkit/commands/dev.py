@@ -223,9 +223,19 @@ def version(ctx, args):
          args=(Arg('level', 'which part of the name', kind='positional', nargs='?',
                    choices=('major', 'minor', 'patch'), default='patch'),
                Arg('no_commit', 'change the file only', kind='flag')),
-         examples=('mkit bump', 'mkit bump minor', 'mkit bump --no-commit'))
+         examples=('mkit bump', 'mkit bump minor', 'mkit bump --no-commit', 'mkit bump --dry-run'),
+         dry_run=True)
 def bump(ctx, args):
     kind = kinds.for_project(ctx.project)
+    if ctx.dry_run:
+        # The same arithmetic kind.bump does, without touching the file: the
+        # name moves by the level, the code by exactly one.
+        old_name, old_code = kind.current_version()
+        name, code = kinds.bump_name(old_name, args.level), old_code + 1
+        if not ctx.out.json:
+            ctx.out.line(f'{old_name} ({old_code}) -> {name} ({code})   dry run: nothing written')
+        return {'from': {'versionName': old_name, 'versionCode': old_code},
+                'to': {'versionName': name, 'versionCode': code}, 'commit': None, 'dry_run': True}
     old_name, old_code, name, code = kind.bump(args.level)
     committed = None
     if not args.no_commit:

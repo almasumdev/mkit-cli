@@ -190,6 +190,33 @@ def test_self_status_offline_is_not_an_error(capsys, monkeypatch):
     assert code == 0 and data['result']['outdated'] is False
 
 
+def test_init_dry_run_writes_nothing(capsys, tmp_path):
+    """Reported by a user: --dry-run created every file it was meant to preview."""
+    root = tmp_path / 'app'
+    (root / 'android' / 'app').mkdir(parents=True)
+    (root / 'pubspec.yaml').write_text('name: app\nversion: 1.0.0+1\n')
+    code, data = run(capsys, 'init', str(root), '--dry-run')
+    assert code == 0
+    assert sorted(p.name for p in root.iterdir()) == ['android', 'pubspec.yaml']
+    assert 'mkit.toml' in data['result']['written']
+
+
+def test_bump_dry_run_changes_nothing(capsys, project):
+    pubspec = project / 'pubspec.yaml'
+    pubspec.write_text('name: demo\nversion: 1.4.2+7\n', encoding='utf-8')
+    code, data = run(capsys, '--project', str(project), 'bump', 'minor', '--dry-run')
+    assert code == 0
+    assert data['result']['to'] == {'versionName': '1.5.0', 'versionCode': 8}
+    assert pubspec.read_text(encoding='utf-8') == 'name: demo\nversion: 1.4.2+7\n'
+
+
+def test_dry_run_is_refused_where_it_cannot_be_honoured(capsys, project):
+    """A dry run that quietly makes the change is worse than none: say so, do nothing."""
+    code, data = run(capsys, '--project', str(project), '--dry-run', 'remoteconfig', 'pull')
+    assert code == 2
+    assert data['error']['code'] == 'NO_DRY_RUN'
+
+
 # ------------------------------------------------------------------ safety
 
 class _Ctx:

@@ -131,8 +131,8 @@ left becomes the distance from the right, and the tilt turns the other way.
 
 ```toml
 [[slide]]
-id = "sprout"
-shot = "sprout"
+id = "helper"
+shot = "helper"
 
 [[slide.pill]]          # a white pill with a tick
 text = "Lemons"         # literal, never translated: it names an item on the capture
@@ -142,14 +142,14 @@ size = 50               # font size in px (default 44)
 rotate = -5             # degrees (default 0)
 
 [[slide.pill]]
-key = "add"             # captions: sprout.pills.add, so it is translated
+key = "add"             # captions: helper.pills.add, so it is translated
 go = true               # the green action pill
 x = 380
 y = 1740
 size = 54
 
 [[slide.art]]           # a picture from the app repo, PNG or SVG
-src = "store/art/sprout.svg"
+src = "store/art/helper.svg"
 x = 760
 y = 360
 height = 240            # px; the width follows

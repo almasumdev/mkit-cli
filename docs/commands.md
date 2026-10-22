@@ -47,6 +47,7 @@ Examples:
 mkit bump
 mkit bump minor
 mkit bump --no-commit
+mkit bump --dry-run
 ```
 
 ### mkit devices
@@ -521,7 +522,7 @@ mkit products plan
 |---|---|---|
 | `aso impact` | read | What a listing change did: store visitors and keywords before vs after a date |
 | `aso rank` | read | Where the app ranks in Play search for each keyword, vs the last run |
-| `aso research` | read | Find phrases people type and score which are worth targeting |
+| `aso research` | read | Find phrases people type and score which are worth targeting (mkit guide aso) |
 | `aso score` | read | How beatable page one is for each keyword (weakest top-5 install count) |
 | `crashes` | read | Top crash and ANR clusters with where they happen |
 | `reviews list` | read | Reviews with text from the last 7 days (the API limit) |
@@ -568,7 +569,7 @@ mkit aso rank [--workers WORKERS]
 
 `read`, needs `[aso]` in mkit.toml
 
-Find phrases people type and score which are worth targeting
+Find phrases people type and score which are worth targeting (mkit guide aso)
 
 ```
 mkit aso research [--market MARKET] [--top TOP] [--workers WORKERS]
@@ -850,6 +851,7 @@ mkit rules
 |---|---|---|
 | `commands` | read | List every command with its risk class and what it needs |
 | `doctor` | read | Check tools, settings and credentials for this project |
+| `guide` | read | How an app should do what every app has to do, filled in with your studio's details |
 | `init` | write | Link this app folder to mkit (mkit.toml + launchers) |
 | `manual` | read | What only Play Console can do (no API), as a checklist |
 | `schema` | read | Input schema and details of one command |
@@ -890,6 +892,30 @@ mkit doctor
 mkit doctor --json
 ```
 
+### mkit guide
+
+`read`
+
+How an app should do what every app has to do, filled in with your studio's details
+
+```
+mkit guide [name] [--raw]
+```
+
+| Argument | What |
+|---|---|
+| `name` | which guide; leave it out for the list (one of about, review, update, aso, support, ui, store, art, news) |
+| `--raw` | the guide as written, placeholders and all |
+
+Examples:
+
+```
+mkit guide
+mkit guide about
+mkit guide review --json
+mkit guide about --raw
+```
+
 ### mkit init
 
 `write`
@@ -912,7 +938,8 @@ Examples:
 
 ```
 mkit init
-mkit init H:/flutter/onGoing/listkin --name Listkin
+mkit init ../my_app --name MyApp
+mkit init --dry-run
 ```
 
 ### mkit manual

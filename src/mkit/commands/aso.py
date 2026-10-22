@@ -42,7 +42,7 @@ def aso_rank(ctx, args):
             'ranked': len(ranked), 'total': len(results), 'results': results}
 
 
-@command('aso research', 'Find phrases people type and score which are worth targeting',
+@command('aso research', 'Find phrases people type and score which are worth targeting (mkit guide aso)',
          risk='read', needs=('aso',),
          args=(Arg('market', 'only this country (gl), e.g. DE'),
                Arg('top', 'phrases to show per market (human output)', type=int, default=15),
@@ -69,7 +69,7 @@ def aso_research(ctx, args):
             out.table([(f'{r["score"]:.0f}', r['kw'], f'{r["demand"]:.2f}', f'{r["median_top5"]:,}',
                         r['in_title'], f'#{r["pos"]}' if r['pos'] else '-') for r in rows],
                       ('score', 'phrase', 'demand', 'median top 5', 'in titles', 'us'))
-    out.finish(f'{len(results)} phrase(s) scored; pick from the top')
+    out.finish(f'{len(results)} phrase(s) scored; pick from the top, see `mkit guide aso`, "The ladder"')
     return {'file': str(saved), 'results': results}
 
 

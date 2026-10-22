@@ -56,6 +56,10 @@ class Command:
     needs_project: bool = True
     examples: tuple = ()
     description: str = ''
+    # Whether --dry-run is honoured. A command that cannot preview its change
+    # must not pretend to: the CLI refuses the flag rather than letting it run
+    # for real. Every publish-class command supports it, by policy.
+    dry_run: bool = False
 
     def describe(self):
         required = [a.name for a in self.args if a.kind == 'positional' and a.nargs not in ('?', '*', '...')]
@@ -66,6 +70,7 @@ class Command:
             'needs': list(self.needs),
             'needs_project': self.needs_project,
             'confirm': self.risk == 'publish',
+            'dry_run': self.dry_run,
             'input': {
                 'type': 'object',
                 'properties': {a.name: a.schema() for a in self.args},
@@ -84,7 +89,7 @@ def group(name, summary):
 
 
 def command(name, summary, risk, args=(), needs=(), needs_project=True, examples=(),
-            description=''):
+            description='', dry_run=None):
     if risk not in RISKS:
         raise ValueError(f'{name}: risk must be one of {RISKS}')
 
@@ -94,6 +99,7 @@ def command(name, summary, risk, args=(), needs=(), needs_project=True, examples
         REGISTRY[name] = Command(name=name, summary=summary, risk=risk, handler=fn,
                                  args=tuple(args), needs=tuple(needs),
                                  needs_project=needs_project, examples=tuple(examples),
-                                 description=description or (fn.__doc__ or '').strip())
+                                 description=description or (fn.__doc__ or '').strip(),
+                                 dry_run=(risk == 'publish') if dry_run is None else dry_run)
         return fn
     return wrap

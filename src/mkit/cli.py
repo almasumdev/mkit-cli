@@ -150,6 +150,13 @@ def main(argv=None):
         ctx.secrets = Secrets(ctx.project.root if ctx.project else None)
         for feature in cmd.needs:
             ctx.require(feature)
+        if ctx.dry_run and cmd.risk in ('write', 'publish') and not cmd.dry_run:
+            # A dry run that quietly does the real thing is worse than none.
+            # read and plan commands change nothing, so the flag is harmless there.
+            raise UsageError(f'`mkit {name}` has no dry run, so --dry-run would have made '
+                             'the change for real. Nothing was done.',
+                             hint=f'Run `mkit {name}` without --dry-run when you mean it.',
+                             code='NO_DRY_RUN')
         data = cmd.handler(ctx, args)
         out.result(name, data if data is not None else {}, ctx.exit_code)
         return ctx.exit_code

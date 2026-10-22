@@ -1,6 +1,6 @@
 # In-app updates
 
-Every EazyVerse app checks for updates the same way and shows them the same
+Every app checks for updates the same way and shows them the same
 way. The decision logic, the Firebase document `mkit config set` writes, and
 what the user sees are settled here; each app only writes the code in its own
 stack (Flutter or native). Read this before adding or changing update code in
@@ -393,8 +393,7 @@ channel.receiveBroadcastStream().listen((event) {
 
 Guard the listen in a try/catch: the channel is missing in tests and on
 anything but Android with Play, and a missing channel must only mean "no
-percentage", never an error. Value Guard (`lib/ui/update/version_row.dart`,
-`MainActivity.kt`) is the reference.
+percentage", never an error.
 
 `BLOCKED` (major, or below `minSupportedBuild`) is the only full-screen UI: a
 block over the whole app with the update button, and the restart button once

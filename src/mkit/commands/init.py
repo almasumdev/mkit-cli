@@ -144,12 +144,14 @@ ENV_TEMPLATE = """\
 """
 
 
-def _ensure_gitignored(root, entry='.env'):
+def _ensure_gitignored(root, entry='.env', dry_run=False):
     gi = root / '.gitignore'
     text = _read(gi)
     lines = [l.strip() for l in text.splitlines()]
     if entry in lines or f'/{entry}' in lines:
         return False
+    if dry_run:
+        return True
     with open(gi, 'a', encoding='utf-8', newline='\n') as f:
         if text and not text.endswith('\n'):
             f.write('\n')
@@ -164,7 +166,8 @@ def _ensure_gitignored(root, entry='.env'):
                Arg('package', 'override the detected package id'),
                Arg('name', 'override the detected app name'),
                Arg('force', 'overwrite existing mkit.toml and launchers', kind='flag')),
-         examples=('mkit init', 'mkit init H:/flutter/onGoing/listkin --name Listkin'))
+         examples=('mkit init', 'mkit init ../my_app --name MyApp', 'mkit init --dry-run'),
+         dry_run=True)
 def init(ctx, args):
     root = Path(args.path or '.').resolve()
     if not root.is_dir():
@@ -193,18 +196,19 @@ def init(ctx, args):
         if target.exists() and not args.force:
             kept.append(fname)
             continue
-        newline = '\r\n' if fname.endswith('.bat') else '\n'
-        with open(target, 'w', encoding='utf-8', newline=newline) as f:
-            f.write(content)
+        if not ctx.dry_run:
+            newline = '\r\n' if fname.endswith('.bat') else '\n'
+            with open(target, 'w', encoding='utf-8', newline=newline) as f:
+                f.write(content)
         written.append(fname)
-    if _ensure_gitignored(root):
+    if _ensure_gitignored(root, dry_run=ctx.dry_run):
         written.append('.gitignore (.env)')
 
     out = ctx.out
     if not out.json:
         out.heading(f'{name}   {kind}   {package or "package not found"}')
         for f in written:
-            out.line(f'  wrote {f}', 'green')
+            out.line(f'  {"would write" if ctx.dry_run else "wrote"} {f}', 'green')
         for f in kept:
             out.line(f'  kept  {f} (exists; --force to replace)', 'dim')
         out.line()

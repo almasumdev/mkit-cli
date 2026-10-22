@@ -105,6 +105,29 @@ Some things have no API and must be done in the Play Console. `mkit manual`
 lists them, so you know what is left rather than discovering it at release
 time.
 
+## Guides
+
+Some things every app has to do, and every app that works them out alone does
+differently: an About screen, asking for a rating, checking for updates, being
+found on Play, answering users. mkit carries a guide for each, and fills it in
+with your studio's details:
+
+```bash
+mkit guide              # the list
+mkit guide about        # the About screen, with your email, developer page, links
+mkit guide review       # when to ask for a rating, and what Play forbids around it
+```
+
+Set your details once in `~/.mkit/config.toml` — `[studio]` for the facts,
+`[about]` for which parts your About screen has and what it says — and every
+guide, for every app, uses them. Anything not set shows as ‹key› and is listed.
+Keep your own rules beside a guide in `[guide] house_dir`; they are appended
+and win where they disagree. The keys are in
+[docs/config.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/config.md#studio-details-mkit-guide).
+
+They are written so an AI agent building the screen can follow them too:
+`mkit guide about --json` returns the text.
+
 ## Working with AI agents
 
 mkit answers in JSON whenever it is not attached to a terminal, with one
@@ -119,6 +142,11 @@ and what an agent must never do.
 |---|---|
 | [docs/commands.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/commands.md) | every command and flag |
 | [docs/config.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/config.md) | `mkit.toml`, the store and keyword files, credentials |
+| [docs/about-screen.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/about-screen.md) | the About screen: its parts, words, marks and behaviour (`mkit guide about`) |
+| [docs/in-app-review.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/in-app-review.md) | asking for a rating: when, where, and the rules Play enforces (`mkit guide review`) |
+| [docs/aso.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/aso.md) | being found on Play: the indexed fields, winnable keywords, the title |
+| [docs/support-replies.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/support-replies.md) | answering users by email |
+| [docs/app-ui.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/app-ui.md) | how an app is organised: colours, Pro, pickers, Settings |
 | [docs/store.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/store.md) | the `store/` folder: what lives where, in every language |
 | [docs/store-art.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/store-art.md) | screenshots and the feature graphic, built from real captures |
 | [docs/in-app-update.md](https://github.com/almasumdev/mkit-cli/blob/main/docs/in-app-update.md) | how an app should check for updates: Play first, your policy second |
